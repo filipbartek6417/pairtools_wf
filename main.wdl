@@ -2,8 +2,6 @@ version 1.0
 
 task pairtools_task {
     input {
-        File aligned
-        File genome
         String container
     }
 
@@ -28,8 +26,6 @@ workflow pairtools_wf {
 
   call pairtools_task {
     input:
-      aligned = aligned,
-      genome = genome,
       container = container
   }
 
