@@ -7,6 +7,10 @@ task pairtools_task {
     }
 
     command <<<
+        apt-get update && apt-get install -y python3 pip
+        python3 -m venv ~/pairtools_venv
+        source ~/pairtools_venv/bin/activate
+        pip install pairtools
         pairtools parse2 --min-mapq 40 --walks-policy 5unique --max-inter-align-gap 30 --nproc-in 8 --nproc-out 8 --chroms-path ~{genome} ~{aligned} > parsed.pairsam
     >>>
 
@@ -18,7 +22,7 @@ task pairtools_task {
         cpu: 32
         memory: "100G"
         disks: "local-disk 2000 SSD"
-        docker: "quay.io/biocontainers/pairtools:1.1.3--pyhdfd78af_0"
+        docker: "ubuntu:latest"
     }
 }
 
