@@ -7,8 +7,6 @@ task pairtools_task {
     }
 
     command <<<
-        apt-get update && apt-get install -y conda
-        conda install -c conda-forge -c bioconda pairtools
         pairtools parse2 --min-mapq 40 --walks-policy 5unique --max-inter-align-gap 30 --nproc-in 8 --nproc-out 8 --chroms-path ~{genome} ~{aligned} > parsed.pairsam
     >>>
 
@@ -20,7 +18,7 @@ task pairtools_task {
         cpu: 32
         memory: "100G"
         disks: "local-disk 2000 SSD"
-        docker: "ubuntu:latest"
+        docker: "quay.io/biocontainers/pairtools:1.1.3--pyhdfd78af_0"
     }
 }
 
