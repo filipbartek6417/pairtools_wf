@@ -1,0 +1,6 @@
+version: 1.2
+workflows:
+  - name: pairtools_wf
+    subclass: WDL
+    primaryDescriptorPath: /main.wdl
+    testParameterFiles: []
