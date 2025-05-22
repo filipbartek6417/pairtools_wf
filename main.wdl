@@ -23,7 +23,6 @@ task pairtools_task {
         memory: "100G"
         disks: "local-disk 2000 SSD"
         docker: container
-        preemptible: 3
     }
 }
 
