@@ -8,7 +8,7 @@ task pairtools_task {
     }
 
     command <<<
-        pairtools parse2 --min-mapq 40 --walks-policy 5unique --max-inter-align-gap 30 --nproc-in 8 --nproc-out 8 --chroms-path ~{genome} ~{aligned} > parsed.pairsam
+        pairtools parse2 --min-mapq 40 --max-inter-align-gap 30 --nproc-in 8 --nproc-out 8 --chroms-path ~{genome} ~{aligned} > parsed.pairsam
         mkdir /home/temp
         pairtools sort --nproc 16 --tmpdir=/home/temp/  parsed.pairsam > sorted.pairsam
         pairtools dedup --nproc-in 8 --nproc-out 8 --mark-dups --output-stats stats.txt --output dedup.pairsam sorted.pairsam
