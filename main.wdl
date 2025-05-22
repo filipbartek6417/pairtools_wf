@@ -7,8 +7,8 @@ task pairtools_task {
     }
 
     command <<<
-        apt-get update && apt-get install -y pip
-        pip install pairtools
+        apt-get update && apt-get install -y conda
+        conda install -c conda-forge -c bioconda pairtools
         pairtools parse2 --min-mapq 40 --walks-policy 5unique --max-inter-align-gap 30 --nproc-in 8 --nproc-out 8 --chroms-path ~{genome} ~{aligned} > parsed.pairsam
     >>>
 
