@@ -4,23 +4,20 @@ task pairtools_task {
     input {
         File aligned
         File genome
+        String container
     }
 
     command <<<
-        apt-get update && apt-get install -y python3 python3-pip
-        python3 -m pip install pairtools
-        pairtools parse2 --min-mapq 40 --walks-policy 5unique --max-inter-align-gap 30 --nproc-in 8 --nproc-out 8 --chroms-path ~{genome} ~{aligned} > parsed.pairsam
+        pairtools --help
     >>>
 
-    output {
-        File parsed = "parsed.pairsam"
-    }
+    output {}
 
     runtime {
         cpu: 32
         memory: "100G"
         disks: "local-disk 2000 SSD"
-        docker: "ubuntu:latest"
+        docker: ~{container}
     }
 }
 
@@ -28,15 +25,15 @@ workflow pairtools_wf {
   input {
     File aligned = "gs://fc-c3eed389-0be2-4bbc-8c32-1a40b8696969/submissions/5646ab28-9144-42af-8d4d-93ebe9e0942c/porec_qc/e466ed5e-fcdb-4e3c-bfa6-7fadc23540b2/call-minimap2_align/aligned.sam"
     File genome = "gs://fc-c3eed389-0be2-4bbc-8c32-1a40b8696969/bartek_testing/hs1_ref/hs1.genome"
+    String container = "ubuntu:latest"
   }
 
   call pairtools_task {
     input:
       aligned = aligned,
-      genome = genome
+      genome = genome,
+      container = container
   }
 
-  output {
-    File parsed = pairtools_task.parsed
-  }
+  output {}
 }
