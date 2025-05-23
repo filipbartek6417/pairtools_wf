@@ -2,42 +2,40 @@ version 1.0
 
 task pairtools_task {
     input {
-        File aligned
-        File genome
+        File parsed
         String container
     }
 
     command <<<
-        pairtools parse2 --min-mapq 40 --max-inter-align-gap 30 --nproc-in 8 --nproc-out 8 --chroms-path ~{genome} ~{aligned} > parsed.pairsam
+        mkdir /home/temp
+        pairtools sort --nproc 32 --tmpdir=/home/temp/ ~{parsed} > sorted.pairsam
     >>>
 
     output {
-        File parsed = "parsed.pairsam"
+        File sorted = "sorted.pairsam"
     }
 
     runtime {
         cpu: 32
         memory: "200G"
-        disks: "local-disk 5000 SSD"
+        disks: "local-disk 20000 SSD"
         docker: container
     }
 }
 
 workflow pairtools_wf {
   input {
-    File aligned = "gs://fc-c3eed389-0be2-4bbc-8c32-1a40b8696969/submissions/0403f7e5-bf00-4b07-89a5-9cc18e72022a/bwa_alignment/687fa25b-a6ad-4f8f-a722-48171019296c/call-align_with_bwa/aligned.sam"
-    File genome = "gs://fc-c3eed389-0be2-4bbc-8c32-1a40b8696969/bartek_testing/hs1_ref/hs1.genome"
+    File parsed = "gs://fc-c3eed389-0be2-4bbc-8c32-1a40b8696969/submissions/21f6cdc5-b0f7-4bf2-bd7c-4ff6079fc9c0/pairtools_wf/ef8fc978-62ce-4b61-a0de-a471781f4afa/call-pairtools_task/parsed.pairsam"
     String container = "quay.io/biocontainers/pairtools:1.1.3--py311h534e829_0"
   }
 
   call pairtools_task {
     input:
-      aligned = aligned,
-      genome = genome,
+      parsed = parsed,
       container = container
   }
 
   output {
-      File parsed = pairtools_task.parsed
+      File sorted = pairtools_task.sorted
   }
 }
