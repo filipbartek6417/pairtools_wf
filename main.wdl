@@ -7,13 +7,12 @@ task pairtools_task {
     }
 
     command <<<
-        mkdir /home/temp
-        mount /dev/sdb1 /home/temp
-        pairtools sort --nproc 32 --tmpdir=/home/temp ~{parsed} > /home/temp/sorted.pairsam
+        mkdir -p ${PWD}/temp
+        pairtools sort --nproc 32 --tmpdir=${PWD}/temp ~{parsed} > sorted.pairsam
     >>>
 
     output {
-        File sorted = "/home/temp/sorted.pairsam"
+        File sorted = "sorted.pairsam"
     }
 
     runtime {
