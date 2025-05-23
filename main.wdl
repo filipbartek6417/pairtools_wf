@@ -12,7 +12,7 @@ task pairtools_task {
     >>>
 
     output {
-        File parsed = "parsed.pairsam"
+        File sorted = "sorted.pairsam"
     }
 
     runtime {
