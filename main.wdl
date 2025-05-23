@@ -30,7 +30,7 @@ workflow pairtools_wf {
 
   call pairtools_task {
     input:
-      parsed = parsed
+      container = container
   }
 
   output {
